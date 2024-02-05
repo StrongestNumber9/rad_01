@@ -9,13 +9,10 @@
   <description>Record Audit Data Library</description>
   <url>https://teragrep.com</url>
   <groupId>com.teragrep</groupId>
-  <version>${revision}${sha1}${changelist}</version>
+  <version>${git.commit.id.describe}</version>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <revision>0.0.1</revision>
-    <changelist>-SNAPSHOT</changelist>
-    <sha1/>
     <java.version>1.8</java.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -64,6 +61,39 @@
     <directory>${project.basedir}/target</directory>
     <finalName>rad_01</finalName>
     <plugins>
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>4.9.10</version>
+        <executions>
+          <execution>
+            <id>get-the-git-infos</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>validate-the-git-infos</id>
+            <goals>
+              <goal>validateRevision</goal>
+            </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <injectAllReactorProjects>true</injectAllReactorProjects>
+          <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+          <prefix>git</prefix>
+          <verbose>true</verbose>
+          <gitDescribe>
+            <tags>true</tags>
+            <skip>false</skip>
+            <always>true</always>
+            <dirty>-dirty</dirty>
+          </gitDescribe>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
